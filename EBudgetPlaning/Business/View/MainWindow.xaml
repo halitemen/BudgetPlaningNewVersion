@@ -1,0 +1,20 @@
+﻿<Window x:Class="EBudgetPlaning.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EBudgetPlaning"
+        mc:Ignorable="d"
+        Title="Kullanıcı Giriş Ekranı" Height="307.801" Width="350" WindowStartupLocation="CenterScreen">
+
+    <Grid MinWidth="270" MinHeight="300" Background="#FF8EB4F5">
+        <TextBlock HorizontalAlignment="Left"  Margin="10,102,0,0" TextWrapping="Wrap" Text="Kullanıcı Adı : " VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,145,0,0" TextWrapping="Wrap" Text="Şifre : " VerticalAlignment="Top" FontSize="20"/>
+        <TextBox Text="{Binding UserName, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="154,102,0,0" VerticalAlignment="Top" Width="157"/>
+        <TextBox Text="{Binding UserPass, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="154,147,0,0" VerticalAlignment="Top" Width="157"/>
+        <Label Content="Kullanıcı Giriş Bilgileri" HorizontalAlignment="Left" Margin="39,33,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Times New Roman" Height="43" Width="254"/>
+        <Button Command="{Binding CheckUser}" Content="Giriş Yap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Margin="224,209,0,0" Height="Auto"/>
+
+
+    </Grid>
+</Window>

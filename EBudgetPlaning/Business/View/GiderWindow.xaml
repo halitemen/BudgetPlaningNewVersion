@@ -1,0 +1,19 @@
+﻿<Window x:Class="EBudgetPlaning.Business.View.GiderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EBudgetPlaning.Business.View"
+        mc:Ignorable="d"
+        Title="Gider" Height="300" Width="321.429" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBox Text="{Binding GiderAdi, Mode=TwoWay}" Height="29" Margin="132,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"/>
+        <TextBox Text="{Binding GiderMiktari, Mode=TwoWay}" Margin="132,86,0,151" TextWrapping="Wrap" HorizontalAlignment="Left" Width="150"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Gider Türü" VerticalAlignment="Top" Margin="10,26,0,0" Height="29" Width="73"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Gider Miktarı" VerticalAlignment="Top" Margin="10,86,0,0" Height="29" Width="88"/>
+        <TextBlock TextWrapping="Wrap" Text="Gider Tarihi" VerticalAlignment="Top" Margin="10,155,0,0" Height="29" HorizontalAlignment="Left" Width="78"/>
+        <Button Command="{Binding GiderCommand}" Content="{Binding buttonName}" Margin="191,202,0,35" MaxWidth="130" HorizontalAlignment="Left" Width="Auto" Height="Auto"/>
+        <DatePicker Text="{Binding GiderTarihi, Mode=TwoWay}" HorizontalAlignment="Left" Margin="132,145,0,0" VerticalAlignment="Top" Width="150" Height="30"/>
+
+    </Grid>
+</Window>

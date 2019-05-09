@@ -1,0 +1,22 @@
+﻿<Window x:Class="EBudgetPlaning.Business.View.AllincomeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EBudgetPlaning.Business.View"
+        mc:Ignorable="d"
+        Title="Toplu Gelir Görüntüleme" Height="300" Width="539.098" WindowStartupLocation="CenterScreen">
+    <Grid Margin="0,0,2,0">
+        <ListView ItemsSource="{Binding GelirList}" HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="509">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="GELİR ID" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding GelirAdi}" Header="GELİR ADI" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding GelirMiktari}" Header="GELİR MİKTARI" Width="Auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding GelirTarihi}" Header="GELİR TARiHİ" Width="Auto"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
