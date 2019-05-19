@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using EBudgetPlaning.Business.Model;
 
@@ -18,11 +20,21 @@ namespace EBudgetPlaning.Business.ViewModel
             giderDb = new GiderDbAccess();
             AllGiderList = giderDb.allGider();
             giderModel = new GiderModel();
+            CheckedAllGider = true;
+            Liste = AllGiderList;
+            VisibleObject = Visibility.Hidden;
+            MyComboList = giderDb.getSearchGiderList();
         }
 
         #endregion
 
         #region Members
+
+        private ObservableCollection<GiderModel> liste;
+
+        private Visibility visibleObject;
+
+        List<string> myComboList;
 
         //Gider Modeli
         GiderModel giderModel;
@@ -33,14 +45,56 @@ namespace EBudgetPlaning.Business.ViewModel
         //Bütün Gider listesi
         ObservableCollection<GiderModel> allGiderList;
 
-        //Seçilen tarih
-        private DateTime selectDate;
+        private bool checkedAllGider;
 
         #endregion
 
         #region Properties
 
+        public bool CheckedAllGider
+        {
+            get { return checkedAllGider; }
+            set
+            {
+                checkedAllGider = value;
+                OnPropertyChanged(nameof(CheckedAllGider));
+            }
+        }
+
+        public string SelectedItem { get; set; }
+
+        public ObservableCollection<GiderModel> Liste
+        {
+            get { return liste; }
+            set
+            {
+                liste = value;
+                OnPropertyChanged(nameof(Liste));
+            }
+        }
+
+        public Visibility VisibleObject
+        {
+            get { return visibleObject; }
+            set
+            {
+                visibleObject = value;
+                OnPropertyChanged(nameof(VisibleObject));
+            }
+        }
+
+        public List<string> MyComboList
+        {
+            get { return myComboList; }
+            set
+            {
+                myComboList = value;
+                OnPropertyChanged(nameof(MyComboList));
+            }
+        }
+
         public string buttonName { get; set; }
+
         public ObservableCollection<GiderModel> AllGiderList
         {
             get { return allGiderList; }
@@ -50,6 +104,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnPropertyChanged(nameof(AllGiderList));
             }
         }
+
         public int Id
         {
             get { return giderModel.Id; }
@@ -59,6 +114,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnPropertyChanged(nameof(Id));
             }
         }
+
         public string GiderAdi
         {
             get { return giderModel.GiderAdi; }
@@ -68,6 +124,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnPropertyChanged(nameof(GiderAdi));
             }
         }
+
         public string GiderMiktari
         {
             get { return giderModel.GiderMiktari; }
@@ -77,6 +134,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnPropertyChanged(nameof(GiderMiktari));
             }
         }
+
         public string GiderTarihi
         {
             get { return giderModel.GiderTarihi; }
@@ -101,11 +159,21 @@ namespace EBudgetPlaning.Business.ViewModel
         #region ICommand
 
         private ICommand giderCommand;
+        private ICommand getListeCommand;
 
         #endregion
 
         #region Command
 
+        public ICommand GetListeCommand
+        {
+            get
+            {
+                if (getListeCommand == null)
+                    getListeCommand = new RelayCommand(getList);
+                return getListeCommand;
+            }
+        }
         public ICommand GiderCommand
         {
             get
@@ -137,8 +205,48 @@ namespace EBudgetPlaning.Business.ViewModel
                 AddGiderEvent?.Invoke(giderModel, new EventArgs());
                 CloseGiderWindow?.Invoke(this, new EventArgs());
             }
-
         }
+
+        private void getList()
+        {
+            if (CheckedAllGider == true)
+            {                
+                Liste = AllGiderList;
+                VisibleObject = Visibility.Hidden;
+            }
+            else
+            {
+                VisibleObject = Visibility.Visible;
+                Liste = null;
+                Liste = new ObservableCollection<GiderModel>();
+                string value;
+                if (SelectedItem != null)
+                {
+                    for (int i = 0; i < AllGiderList.Count; i++)
+                    {
+                        if (AllGiderList[i].GiderTarihi.Length == 10)
+                        {
+                            value = AllGiderList[i].GiderTarihi.Substring(3, 7).ToString();
+                        }
+                        else
+                        {
+                            value = AllGiderList[i].GiderTarihi.Substring(2, 7).ToString();
+                        }
+                        if (value == SelectedItem)
+                        {
+                            Liste.Add(new GiderModel
+                            {
+                                Id = AllGiderList[i].Id,
+                                GiderAdi = AllGiderList[i].GiderAdi,
+                                GiderMiktari = AllGiderList[i].GiderMiktari,
+                                GiderTarihi = AllGiderList[i].GiderTarihi
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
 
         private void OnPropertyChanged(string propName)
         {

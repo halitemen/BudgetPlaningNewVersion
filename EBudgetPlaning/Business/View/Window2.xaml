@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EBudgetPlaning.Business.View"
         mc:Ignorable="d"
-        Title="Bütün Giderleriniz" Height="300" Width="473.684" WindowStartupLocation="CenterScreen">
+        Title="Bütün Giderleriniz" Height="300" Width="508.647" WindowStartupLocation="CenterScreen">
     <Grid>
-        <ListView ItemsSource="{Binding AllGiderList}" Margin="10,0,5,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="84*"/>
+        </Grid.ColumnDefinitions>
+        <ListView ItemsSource="{Binding Liste}" Margin="10,60,5,10" Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Gider Id" Width="Auto"/>
@@ -17,5 +20,9 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <CheckBox Command="{Binding GetListeCommand}" IsChecked="{Binding CheckedAllGider}" Content="Tüm Giderleri Gör" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="129" Height="26"/>
+        <Label Visibility="{Binding VisibleObject, Mode=TwoWay}" Content="Tarih seçiniz." HorizontalAlignment="Left" Margin="164,11,0,0" VerticalAlignment="Top" Height="26" Width="76"/>
+        <Button Command="{Binding GetListeCommand}" Visibility="{Binding VisibleObject}" Content="Ara" HorizontalAlignment="Left" VerticalAlignment="Top" Width="54" Margin="437,11,0,0"/>
+        <ComboBox Visibility="{Binding VisibleObject}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" ItemsSource="{Binding MyComboList, Mode=TwoWay}" HorizontalAlignment="Left" Margin="263,11,0,0" VerticalAlignment="Top" Width="146" Height="28"/>
     </Grid>
 </Window>

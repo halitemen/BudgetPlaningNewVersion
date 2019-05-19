@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EBudgetPlaning.Data;
 
 namespace EBudgetPlaning.Business.Model
@@ -19,12 +16,13 @@ namespace EBudgetPlaning.Business.Model
             db = new DataBase();
             giderList = new ObservableCollection<GiderModel>();
             allgiderList = new ObservableCollection<GiderModel>();
+            searchList = new List<string>();
         }
 
         #endregion
 
         #region Members
-
+        List<string> searchList;
         DataBase db;
         ObservableCollection<GiderModel> giderList;
         ObservableCollection<GiderModel> allgiderList;
@@ -127,6 +125,28 @@ namespace EBudgetPlaning.Business.Model
             }
 
         }
+
+        public List<string> getSearchGiderList()
+        {
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                SQLiteCommand command = new SQLiteCommand("select * from giderler", con);
+                SQLiteDataReader dr = command.ExecuteReader();
+                while (dr.Read())
+                {
+                    string dbDate = dr[3].ToString();
+                    string[] dbMonth = dbDate.Split('.');
+                    string val = dbMonth[1] + "." + dbMonth[2];
+                    if (!searchList.Contains(val))
+                    {
+                        searchList.Add(val);
+                    }
+                }
+                con.Close();
+                return searchList;
+            }
+        }
+
 
 
         #endregion

@@ -309,6 +309,12 @@ namespace EBudgetPlaning.Business.ViewModel
                         MessageBox.Show("Bir sorun oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     break;
+                case "KUR":
+                    using (BrowserWindow browser = new BrowserWindow())
+                    {
+                        browser.ShowDialog();
+                    }
+                    break;
 
             }
         }

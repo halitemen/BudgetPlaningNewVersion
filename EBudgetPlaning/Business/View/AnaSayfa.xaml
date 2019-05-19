@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EBudgetPlaning.Business.View"
+        xmlns:helper="clr-namespace:EBudgetPlaning.Business.Helper"
         mc:Ignorable="d"
         Title="AnaSayfa" Height="461.5" MaxHeight="461.5" Width="1000.5" MaxWidth="1000.5" WindowStartupLocation="CenterScreen">
 
+    <Window.Resources>
+        <helper:ValueConverter x:Key="ConvertColor"/>
+    </Window.Resources>
     <Grid  Margin="0,10,1,332">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -18,7 +22,13 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Gelir Id" Width="Auto"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding GelirAdi}" Header="Gelir Türü" Width="Auto" />
+                        <GridViewColumn DisplayMemberBinding="{Binding GelirAdi}" Header="Gelir Türü" Width="Auto" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{Binding GelirAdi, Converter={StaticResource ConvertColor}}" Width="30" Height="30"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding GelirMiktari}" Header="Gelir Miktarı" Width="Auto">
                         </GridViewColumn>
 
@@ -33,6 +43,7 @@
             <Button Command="{Binding MainPageCommand}" CommandParameter="EXCELEAKTAR" Content="EXCELE AKTAR" HorizontalAlignment="Left" Margin="170,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
             <TextBlock HorizontalAlignment="Left" Margin="12,130,0,0" TextWrapping="Wrap" Text="TOPLAM GELİR" VerticalAlignment="Top" Width="92"/>
             <TextBlock Text="{Binding ToplamGelir}" HorizontalAlignment="Left" Margin="109,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <!--<Button Command="{Binding MainPageCommand}" CommandParameter="KUR" Content="Döviz/Altın Kur" HorizontalAlignment="Left" Margin="170,85,0,0" VerticalAlignment="Top" Width="146" Height="27"/>-->
 
         </Grid>
         <Grid HorizontalAlignment="Right" Margin="0,0,0,-331" Grid.RowSpan="2" Width="491">
@@ -49,11 +60,11 @@
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDEREKLE" Content="GİDER EKLE" HorizontalAlignment="Left" Margin="12,15,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDERSIL"  Content="GİDER SİL" HorizontalAlignment="Left" Margin="12,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GUNCELLE"  Content="GİDER GÜNCELLE" HorizontalAlignment="Left" Margin="12,85,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
-            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDERLERIGOR"  Content="BÜTÜN GİDERLER" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Height="Auto" Margin="197,15,0,0"/>
-            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="EXCELAL"  Content="EXCELE AKTAR" HorizontalAlignment="Left" Margin="197,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDERLERIGOR"  Content="BÜTÜN GİDERLER" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Height="Auto" Margin="170,15,0,0"/>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="EXCELAL"  Content="EXCELE AKTAR" HorizontalAlignment="Left" Margin="170,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
             <TextBlock HorizontalAlignment="Left" Margin="12,130,0,0" TextWrapping="Wrap" Text="TOPLAM GİDER:" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="115,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="{Binding ToplamGider}"/></TextBlock>
         </Grid>
-        
+
     </Grid>
 </Window>

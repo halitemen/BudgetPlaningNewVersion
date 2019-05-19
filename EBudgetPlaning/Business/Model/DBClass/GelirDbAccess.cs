@@ -23,15 +23,17 @@ namespace EBudgetPlaning.Business.Model
             gelirList = new ObservableCollection<GelirModel>();
             allgelirList = new ObservableCollection<GelirModel>();
             db = new DataBase();
+            searchList = new List<string>();
         }
 
         #endregion
 
         #region Members
+
+        List<string> searchList;
         DataBase db;
         ObservableCollection<GelirModel> gelirList;
         ObservableCollection<GelirModel> allgelirList;
-        string gelirDBPath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + @"\Data\gelirler.db";
         string dateSystem = DateTime.Now.ToShortDateString();
 
         #endregion
@@ -127,6 +129,29 @@ namespace EBudgetPlaning.Business.Model
             }
 
         }
+
+        public List<string> getSearchGelirList()
+        {
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                SQLiteCommand command = new SQLiteCommand("select * from gelirler", con);
+                SQLiteDataReader dr = command.ExecuteReader();
+                while (dr.Read())
+                {
+                    string dbDate = dr[3].ToString();
+                    string[] dbMonth = dbDate.Split('.');
+                    string val = dbMonth[1] +"."+ dbMonth[2];
+                    if (!searchList.Contains(val))
+                    {
+                        searchList.Add(val);
+                    }                 
+                }
+                con.Close();
+                return searchList;
+            }
+        }
+
+
 
         #endregion
     }

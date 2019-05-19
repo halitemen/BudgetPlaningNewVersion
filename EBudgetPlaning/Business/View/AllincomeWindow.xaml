@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="Toplu Gelir Görüntüleme" Height="300" Width="539.098" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,2,0">
-        <ListView ItemsSource="{Binding GelirList}" HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="509">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="264*"/>
+            <ColumnDefinition Width="265*"/>
+        </Grid.ColumnDefinitions>
+        <ListView ItemsSource="{Binding Liste}" Margin="10,41,10,10" Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="GELİR ID" Width="Auto"/>
@@ -17,6 +21,12 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <CheckBox Command="{Binding GetListCommand}" IsChecked="{Binding CheckedAllGelir}" Content="Tüm Gelirleri Gör" HorizontalAlignment="Left" Margin="18,9,0,0" VerticalAlignment="Top" Width="129" Height="26"/>
+        <ComboBox ItemsSource="{Binding SearchGelirList}" Visibility="{Binding VisibleComboBox}"  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  Grid.Column="1" HorizontalAlignment="Left" Margin="27,11,0,0" VerticalAlignment="Top" Width="128" Height="25" FontWeight="Bold">
+        </ComboBox>
+        <TextBlock Visibility="{Binding VisibleComboBox}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" Margin="166,15,0,0" TextWrapping="Wrap" Text="Tarih Seçiniz." VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.5,0.5">
+        </TextBlock>
+        <Button Command="{Binding GetListCommand}" Visibility="{Binding VisibleComboBox}" Content="Ara" Grid.Column="1" HorizontalAlignment="Left" Margin="180,15,0,0" VerticalAlignment="Top" Width="61" Height="24"/>
 
     </Grid>
 </Window>
