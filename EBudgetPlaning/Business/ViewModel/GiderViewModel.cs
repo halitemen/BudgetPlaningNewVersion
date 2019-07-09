@@ -20,36 +20,133 @@ namespace EBudgetPlaning.Business.ViewModel
             giderDb = new GiderDbAccess();
             AllGiderList = giderDb.allGider();
             giderModel = new GiderModel();
+            VisibleComboBox = Visibility.Hidden;
             CheckedAllGider = true;
-            Liste = AllGiderList;
-            VisibleObject = Visibility.Hidden;
+            ListeGider = AllGiderList;
             MyComboList = giderDb.getSearchGiderList();
+            KategoriList = giderDb.getKategori();
+            CheckBox = false;
+            VisibleObject = Visibility.Collapsed;
+            VisibleObjectKategori = Visibility.Visible;
+            ComboList = giderDb.getKategoriName();
         }
 
         #endregion
 
         #region Members
 
-        private ObservableCollection<GiderModel> liste;
+        /// <summary>
+        /// kategori comboboxın görünürlüğü
+        /// </summary>
+        private Visibility visibleObjectKategori;
 
+        /// <summary>
+        /// Kategori textinin görünürlüğü
+        /// </summary>
         private Visibility visibleObject;
 
+        /// <summary>
+        /// CheckBoxın durumunu tutmak için
+        /// </summary>
+        private bool checkBox;
+
+        /// <summary>
+        /// Kategori Listesini gruplayıp tutar
+        /// </summary>
+        private ObservableCollection<KategoriModel> kategoriList;
+
+        /// <summary>
+        /// kategori combobox
+        /// </summary>
+        private ObservableCollection<string> comboList;
+
+        /// <summary>
+        /// Form üzerindeki nesnelerin görünürlüğü
+        /// </summary>
+        private Visibility visibleComboBox;
+
+        /// <summary>
+        /// Bütün giderlerin Listesi
+        /// </summary>
+        private ObservableCollection<GiderModel> liste;
+
+        /// <summary>
+        /// Ay ve yıl listesi
+        /// </summary>
         List<string> myComboList;
 
-        //Gider Modeli
+        /// <summary>
+        /// Gider Modeli
+        /// </summary>
         GiderModel giderModel;
 
-        //Gider Database erişim sınıfı
+        /// <summary>
+        /// Gider Database sınıfı erisimi
+        /// </summary>
         GiderDbAccess giderDb;
 
-        //Bütün Gider listesi
+        /// <summary>
+        /// Bütün Gider listesi databaseden alır
+        /// </summary>
         ObservableCollection<GiderModel> allGiderList;
 
+        /// <summary>
+        /// CheckBoxın checked durumu
+        /// </summary>
         private bool checkedAllGider;
 
         #endregion
 
         #region Properties
+
+        public Visibility VisibleObjectKategori
+        {
+            get { return visibleObjectKategori; }
+            set
+            {
+                visibleObjectKategori = value;
+                OnPropertyChanged(nameof(VisibleObjectKategori));
+            }
+        }
+
+        public Visibility VisibleObject
+        {
+            get { return visibleObject; }
+            set
+            {
+                visibleObject = value;
+                OnPropertyChanged(nameof(VisibleObject));
+            }
+        }
+
+        public bool CheckBox
+        {
+            get { return checkBox; }
+            set
+            {
+                checkBox = value;
+                OnPropertyChanged(nameof(CheckBox));
+            }
+        }
+        public ObservableCollection<string> ComboList
+        {
+            get { return comboList; }
+            set
+            {
+                comboList = value;
+                OnPropertyChanged(nameof(ComboList));
+            }
+        }
+
+        public Visibility VisibleComboBox
+        {
+            get { return visibleComboBox; }
+            set
+            {
+                visibleComboBox = value;
+                OnPropertyChanged(nameof(VisibleComboBox));
+            }
+        }
 
         public bool CheckedAllGider
         {
@@ -63,25 +160,17 @@ namespace EBudgetPlaning.Business.ViewModel
 
         public string SelectedItem { get; set; }
 
-        public ObservableCollection<GiderModel> Liste
+        public ObservableCollection<GiderModel> ListeGider
         {
             get { return liste; }
             set
             {
                 liste = value;
-                OnPropertyChanged(nameof(Liste));
+                OnPropertyChanged(nameof(ListeGider));
             }
         }
 
-        public Visibility VisibleObject
-        {
-            get { return visibleObject; }
-            set
-            {
-                visibleObject = value;
-                OnPropertyChanged(nameof(VisibleObject));
-            }
-        }
+
 
         public List<string> MyComboList
         {
@@ -145,6 +234,14 @@ namespace EBudgetPlaning.Business.ViewModel
             }
         }
 
+        public ObservableCollection<KategoriModel> KategoriList
+        {
+            get { return kategoriList; }
+            set { kategoriList = value; }
+        }
+
+
+
         #endregion
 
         #region Events
@@ -158,6 +255,7 @@ namespace EBudgetPlaning.Business.ViewModel
 
         #region ICommand
 
+        private ICommand checkboxCommand;
         private ICommand giderCommand;
         private ICommand getListeCommand;
 
@@ -165,12 +263,22 @@ namespace EBudgetPlaning.Business.ViewModel
 
         #region Command
 
+        public ICommand CheckboxCommand
+        {
+            get
+            {
+                if (checkboxCommand == null)
+                    checkboxCommand = new RelayCommand(forKategoriVisible);
+                return checkboxCommand;
+            }
+        }
+
         public ICommand GetListeCommand
         {
             get
             {
                 if (getListeCommand == null)
-                    getListeCommand = new RelayCommand(getList);
+                    getListeCommand = new RelayCommand(getGiderList);
                 return getListeCommand;
             }
         }
@@ -187,6 +295,20 @@ namespace EBudgetPlaning.Business.ViewModel
         #endregion
 
         #region Metods
+
+        private void forKategoriVisible()
+        {
+            if (!CheckBox)
+            {
+                VisibleObjectKategori = Visibility.Visible;
+                VisibleObject = Visibility.Hidden;
+            }
+            else
+            {
+                VisibleObjectKategori = Visibility.Hidden;
+                VisibleObject = Visibility.Visible;
+            }
+        }
 
         /// <summary>
         /// buttonun adına göre günceller ya da yeni kayıt ekler
@@ -207,18 +329,18 @@ namespace EBudgetPlaning.Business.ViewModel
             }
         }
 
-        private void getList()
+        private void getGiderList()
         {
             if (CheckedAllGider == true)
-            {                
-                Liste = AllGiderList;
-                VisibleObject = Visibility.Hidden;
+            {
+                ListeGider = AllGiderList;
+                VisibleComboBox = Visibility.Hidden;
             }
             else
             {
-                VisibleObject = Visibility.Visible;
-                Liste = null;
-                Liste = new ObservableCollection<GiderModel>();
+                VisibleComboBox = Visibility.Visible;
+                ListeGider = null;
+                ListeGider = new ObservableCollection<GiderModel>();
                 string value;
                 if (SelectedItem != null)
                 {
@@ -234,13 +356,14 @@ namespace EBudgetPlaning.Business.ViewModel
                         }
                         if (value == SelectedItem)
                         {
-                            Liste.Add(new GiderModel
+                            giderModel = new GiderModel
                             {
                                 Id = AllGiderList[i].Id,
                                 GiderAdi = AllGiderList[i].GiderAdi,
                                 GiderMiktari = AllGiderList[i].GiderMiktari,
                                 GiderTarihi = AllGiderList[i].GiderTarihi
-                            });
+                            };
+                            ListeGider.Add(giderModel);
                         }
                     }
                 }
@@ -250,7 +373,7 @@ namespace EBudgetPlaning.Business.ViewModel
 
         private void OnPropertyChanged(string propName)
         {
-            PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(propName)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
 

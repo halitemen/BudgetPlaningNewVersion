@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Halit\Desktop\BitirmeProjesi\EBudgetPlaning\EBudgetPlaning\obj\Debug\
+C:\Users\Halit\Desktop\BitirmeProjesi\Source\Repos\EBudgetPlaning\EBudgetPlaning\obj\Debug\
 EBudgetPlaning
 none
 false
 DEBUG;TRACE
-C:\Users\Halit\Desktop\BitirmeProjesi\EBudgetPlaning\EBudgetPlaning\App.xaml
-71048325745
-19-770603089
-29-1198494091
-291263055330
-Business\View\AllincomeWindow.xaml;Business\View\AnaSayfa.xaml;Business\View\BrowserWindow.xaml;Business\View\GiderWindow.xaml;Business\View\Window1.xaml;Business\View\Window2.xaml;Business\View\MainWindow.xaml;
+C:\Users\Halit\Desktop\BitirmeProjesi\Source\Repos\EBudgetPlaning\EBudgetPlaning\App.xaml
+10-374254181
+
+36268782656
+45-1712293149
+Business\View\AllincomeWindow.xaml;Business\View\AnaSayfa.xaml;Business\View\GelirAnalizi.xaml;Business\View\GiderAnalizi.xaml;Business\View\GiderWindow.xaml;Business\View\GrafikWindowGelir.xaml;Business\View\GrafikWindowGider.xaml;Business\View\Window1.xaml;Business\View\Window2.xaml;Business\View\MainWindow.xaml;
 
 True
 

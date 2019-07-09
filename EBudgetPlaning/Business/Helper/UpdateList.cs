@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using EBudgetPlaning.Business.Model;
 
 namespace EBudgetPlaning.Business.Helper
@@ -61,6 +62,23 @@ namespace EBudgetPlaning.Business.Helper
                 }
             }
         }
+
+        public static void KategoriListUpdate(this ObservableCollection<KategoriModel> kategoriler,
+            ref ObservableCollection<KategoriModel> kategori, string name, int deger)
+        {
+
+            for (int i = 0; i < kategoriler.Count; i++)
+            {
+                if (kategoriler[i].KategoriAdi == name)
+                {
+                    int val = Convert.ToInt32(kategoriler[i].Degeri);
+                    val += deger;
+                    kategoriler[i].Degeri = val.ToString();
+                    return;
+                }
+            }
+        }
+
 
         #endregion
     }

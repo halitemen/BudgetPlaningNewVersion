@@ -18,41 +18,89 @@ namespace EBudgetPlaning.Business.ViewModel
         public GelirViewModel()
         {
             gelirDb = new GelirDbAccess();
-            GelirList = gelirDb.getGelir();
             AllGelirList = gelirDb.AllGetGelir();
             gelirModel = new GelirModel();
             CheckedAllGelir = true;
             Liste = AllGelirList;
             VisibleComboBox = Visibility.Hidden;
             SearchGelirList = gelirDb.getSearchGelirList();
+            KategoriList = gelirDb.getKategori();
+            CheckBox = false;
+            VisibleObjectKategori = Visibility.Visible;
+            VisibleObject = Visibility.Collapsed;
+            ComboList = gelirDb.getKategoriName();
         }
 
         #endregion
 
         #region Members
 
+        private List<GrafikModel> grafikModel;
+
+        /// <summary>
+        /// kategori comboboxın görünürlüğü
+        /// </summary>
+        private Visibility visibleObjectKategori;
+
+        /// <summary>
+        /// Kategori textinin görünürlüğü
+        /// </summary>
+        private Visibility visibleObject;
+
+        /// <summary>
+        /// CheckBoxın durumunu tutmak için
+        /// </summary>
+        private bool checkBox;
+
+        /// <summary>
+        /// Kategoriye ve miktar bilgisini tutar
+        /// </summary>
+        private ObservableCollection<KategoriModel> kategoriList;
+
+        /// <summary>
+        /// Comboboxa kategorileri eklemek için
+        /// </summary>
+        private ObservableCollection<string> comboList;
+        
+        /// <summary>
+        /// Bu ayki gelirleri tutan liste
+        /// </summary>
         private ObservableCollection<GelirModel> liste;
 
+        /// <summary>
+        /// Nesnelerin görünürlüğünü tutar
+        /// </summary>
         private Visibility visibleComboBox;
 
-        //Gelir Modeli
+        /// <summary>
+        /// Gelir Modeli
+        /// </summary>
         GelirModel gelirModel;
 
-        //Gelir Database erişim sınıfı
+        /// <summary>
+        /// Gelir Database erişim sınıfı
+        /// </summary>
         GelirDbAccess gelirDb;
 
-        //Bütün gelir listesi
+        /// <summary>
+        /// Bütün gelir listesi
+        /// </summary>
         ObservableCollection<GelirModel> allgelirList;
 
-        //Aya göre gelir listesi
-        ObservableCollection<GelirModel> gelirList;
-
+        /// <summary>
+        /// Aranan tarih arasındaki bilgileri tutar
+        /// </summary>
         private List<string> searchGelirList;
 
+        /// <summary>
+        /// Seçilen itemı tutar
+        /// </summary>
         private string selectedItem;
 
+        /// <summary>
+        /// CheckBoxın checked bilgisi
+        /// </summary>
         private bool checkedAllGelir;
-
 
         #endregion
 
@@ -66,6 +114,66 @@ namespace EBudgetPlaning.Business.ViewModel
         #endregion
 
         #region Properties 
+
+        public List<GrafikModel> GrafikModel
+        {
+            get { return grafikModel; }
+            set
+            {
+                grafikModel = value;
+                OnPropertyChanged(nameof(GrafikModel));
+            }
+        }
+
+        public Visibility VisibleObjectKategori
+        {
+            get { return visibleObjectKategori; }
+            set
+            {
+                visibleObjectKategori = value;
+                OnPropertyChanged(nameof(VisibleObjectKategori));
+            }
+        }
+
+        public Visibility VisibleObject
+        {
+            get { return visibleObject; }
+            set
+            {
+                visibleObject = value;
+                OnPropertyChanged(nameof(VisibleObject));
+            }
+        }
+
+        public bool CheckBox
+        {
+            get { return checkBox; }
+            set
+            {
+                checkBox = value;
+                OnPropertyChanged(nameof(CheckBox));
+            }
+        }
+
+        public ObservableCollection<KategoriModel> KategoriList
+        {
+            get { return kategoriList; }
+            set
+            {
+                kategoriList = value;
+                OnPropertyChanged(nameof(KategoriList));
+            }
+        }
+
+        public ObservableCollection<string> ComboList
+        {
+            get { return comboList; }
+            set
+            {
+                comboList = value;
+                OnPropertyChanged(nameof(comboList));
+            }
+        }
 
         public Visibility VisibleComboBox
         {
@@ -85,16 +193,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 checkedAllGelir = value;
             }
         }
-        public string SelectedItem
-        {
-            get { return selectedItem; }
-            set
-            {
-                selectedItem = value;
-                OnPropertyChanged(nameof(GelirList));
-            }
-        }
-
+        public string SelectedItem { get; set; }
         public List<string> SearchGelirList
         {
             get { return searchGelirList; }
@@ -115,15 +214,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnPropertyChanged(nameof(Liste));
             }
         }
-        public ObservableCollection<GelirModel> GelirList
-        {
-            get { return gelirList; }
-            set
-            {
-                gelirList = value;
-                OnPropertyChanged(nameof(GelirList));
-            }
-        }
+
         public ObservableCollection<GelirModel> AllGelirList
         {
             get { return allgelirList; }
@@ -133,6 +224,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnPropertyChanged(nameof(AllGelirList));
             }
         }
+
         public int Id
         {
             get { return gelirModel.Id; }
@@ -177,6 +269,7 @@ namespace EBudgetPlaning.Business.ViewModel
 
         private ICommand gelirCommand;
         private ICommand getListCommand;
+        private ICommand checkboxCommand;
 
         #endregion
 
@@ -202,9 +295,33 @@ namespace EBudgetPlaning.Business.ViewModel
             }
         }
 
+        public ICommand CheckboxCommand
+        {
+            get
+            {
+                if (checkboxCommand == null)
+                    checkboxCommand = new RelayCommand(forKategoriVisible);
+                return checkboxCommand;
+            }
+        }
+
         #endregion
 
         #region Metods
+
+        private void forKategoriVisible()
+        {
+            if (!CheckBox)
+            {
+                VisibleObjectKategori = Visibility.Visible;
+                VisibleObject = Visibility.Hidden;
+            }
+            else
+            {
+                VisibleObjectKategori = Visibility.Hidden;
+                VisibleObject = Visibility.Visible;
+            }
+        }
 
         private void Gelir()
         {

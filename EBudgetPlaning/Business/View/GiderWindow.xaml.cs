@@ -23,5 +23,6 @@ namespace EBudgetPlaning.Business.View
             GC.SuppressFinalize(this);
             GC.Collect();
         }
+
     }
 }

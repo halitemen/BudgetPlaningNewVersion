@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EBudgetPlaning.Business.View"
         xmlns:helper="clr-namespace:EBudgetPlaning.Business.Helper"
         mc:Ignorable="d"
-        Title="AnaSayfa" Height="461.5" MaxHeight="461.5" Width="1000.5" MaxWidth="1000.5" WindowStartupLocation="CenterScreen">
+        Title="AnaSayfa" Height="461.5" MaxHeight="461.5" Width="1035.5" MaxWidth="1200" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <helper:ValueConverter x:Key="ConvertColor"/>
@@ -16,23 +16,17 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition  Height="110*"/>
         </Grid.RowDefinitions>
-        <Grid  Margin="0,0,496,-331" Grid.RowSpan="2" Height="420" VerticalAlignment="Top">
+        <Grid  Margin="0,0,545,-331" Grid.RowSpan="2" Height="420" VerticalAlignment="Top">
 
-            <ListView SelectedItem="{Binding selectedGelirModel}" ItemsSource="{Binding GelirList}" Margin="0,151,10,0">
+            <ListView SelectedItem="{Binding selectedGelirModel}" ItemsSource="{Binding GelirList}" Margin="0,151,0,0">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Gelir Id" Width="Auto"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding GelirAdi}" Header="Gelir Türü" Width="Auto" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid Background="{Binding GelirAdi, Converter={StaticResource ConvertColor}}" Width="30" Height="30"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
+                        <GridViewColumn DisplayMemberBinding="{Binding GelirAdi}" Header="Gelir Kategori" Width="Auto">
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding GelirMiktari}" Header="Gelir Miktarı" Width="Auto">
                         </GridViewColumn>
-
                         <GridViewColumn DisplayMemberBinding="{Binding GelirTarihi}" Header="Gelir Tarihi" Width="Auto" />
+                        
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -41,20 +35,21 @@
             <Button Command="{Binding MainPageCommand}" CommandParameter="GELIRGUNCELLE" Content="GELİR GÜNCELLE" HorizontalAlignment="Left" Margin="12,85,0,0" VerticalAlignment="Top" Width="146" Height="Auto"/>
             <Button Command="{Binding MainPageCommand}" CommandParameter="GELIRLERIGOR" Content="BÜTÜN GELİRLER" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Height="Auto" Margin="170,15,0,0"/>
             <Button Command="{Binding MainPageCommand}" CommandParameter="EXCELEAKTAR" Content="EXCELE AKTAR" HorizontalAlignment="Left" Margin="170,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
-            <TextBlock HorizontalAlignment="Left" Margin="12,130,0,0" TextWrapping="Wrap" Text="TOPLAM GELİR" VerticalAlignment="Top" Width="92"/>
-            <TextBlock Text="{Binding ToplamGelir}" HorizontalAlignment="Left" Margin="109,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="12,130,0,0" TextWrapping="Wrap" Text="TOPLAM GELİR" VerticalAlignment="Top" Width="92" FontWeight="Bold"/>
+            <TextBlock Text="{Binding ToplamGelir, Mode=TwoWay}" HorizontalAlignment="Left" Margin="109,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <Button Command="{Binding MainPageCommand}" CommandParameter="GELIRANALİZİ" Content="GELİR ANALİZİ" HorizontalAlignment="Left" Margin="326,15,0,0" VerticalAlignment="Top" Height="Auto" Width="146" />
+            <Button Command="{Binding MainPageCommand}" CommandParameter="GELİRGRAFIK" Content="GRAFİĞİ GÖR" HorizontalAlignment="Left" Margin="326,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146" />
             <!--<Button Command="{Binding MainPageCommand}" CommandParameter="KUR" Content="Döviz/Altın Kur" HorizontalAlignment="Left" Margin="170,85,0,0" VerticalAlignment="Top" Width="146" Height="27"/>-->
 
         </Grid>
-        <Grid HorizontalAlignment="Right" Margin="0,0,0,-331" Grid.RowSpan="2" Width="491">
+        <Grid HorizontalAlignment="Right" Margin="0,0,0,-331" Grid.RowSpan="2" Width="519">
             <ListView SelectedItem="{Binding selectedGiderModel}" ItemsSource="{Binding GiderList}" Margin="10,151,0,0" RenderTransformOrigin="0.501,0.38">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Gider Id" Width="Auto" />
-                        <GridViewColumn DisplayMemberBinding="{Binding GiderAdi}" Header="Gider Türü" Width="Auto" />
+                        <GridViewColumn DisplayMemberBinding="{Binding GiderAdi}" Header="Gider Kategori" Width="Auto" />
                         <GridViewColumn DisplayMemberBinding="{Binding GiderMiktari}" Header="Gider Miktarı" Width="Auto" />
                         <GridViewColumn DisplayMemberBinding="{Binding GiderTarihi}" Header="Gider Tarihi" Width="Auto" />
-                    </GridView>
+                                            </GridView>
                 </ListView.View>
             </ListView>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDEREKLE" Content="GİDER EKLE" HorizontalAlignment="Left" Margin="12,15,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
@@ -62,8 +57,10 @@
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GUNCELLE"  Content="GİDER GÜNCELLE" HorizontalAlignment="Left" Margin="12,85,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDERLERIGOR"  Content="BÜTÜN GİDERLER" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Height="Auto" Margin="170,15,0,0"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="EXCELAL"  Content="EXCELE AKTAR" HorizontalAlignment="Left" Margin="170,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
-            <TextBlock HorizontalAlignment="Left" Margin="12,130,0,0" TextWrapping="Wrap" Text="TOPLAM GİDER:" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="115,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="{Binding ToplamGider}"/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="12,130,0,0" TextWrapping="Wrap" Text="TOPLAM GİDER" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="115,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="{Binding ToplamGider, Mode=TwoWay}"/></TextBlock>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDERANALIZI"  Content="GİDER ANALİZİ" HorizontalAlignment="Left" Margin="336,15,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Command="{Binding MainPageCommand}" CommandParameter="GIDERGRAFIGI"  Content="GRAFİĞİ GÖR" HorizontalAlignment="Left" Margin="336,50,0,0" VerticalAlignment="Top" Height="Auto" Width="146"/>
         </Grid>
 
     </Grid>

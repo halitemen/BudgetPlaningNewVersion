@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using EBudgetPlaning.Business.Helper;
 using EBudgetPlaning.Data;
 
 namespace EBudgetPlaning.Business.Model
@@ -54,6 +50,7 @@ namespace EBudgetPlaning.Business.Model
                         GelirAdi = dr[1].ToString(),
                         GelirMiktari = dr[2].ToString(),
                         GelirTarihi = dr[3].ToString()
+
                     });
                 }
                 con.Close();
@@ -89,12 +86,16 @@ namespace EBudgetPlaning.Business.Model
         }
         public void AddGelir(GelirModel gelir)
         {
+            string[] getMontYear = gelir.GelirTarihi.Split('.');
+            string montAndYear = getMontYear[1] + "." + getMontYear[2];
             using (SQLiteConnection con = db.GetConnection())
             {
-                SQLiteCommand command = new SQLiteCommand("INSERT INTO gelirler(gelir_adi, gelir_miktari, gelir_tarihi) VALUES (@gAdi, @mik, @tarih)", con);
+                SQLiteCommand command = new SQLiteCommand("INSERT INTO gelirler(gelir_adi, gelir_miktari, gelir_tarihi,gelir_kisatarih)" +
+                                                          "VALUES (@gAdi, @mik, @tarih,@ay)", con);
                 command.Parameters.AddWithValue("gAdi", gelir.GelirAdi);
                 command.Parameters.AddWithValue("mik", gelir.GelirMiktari);
                 command.Parameters.AddWithValue("tarih", gelir.GelirTarihi);
+                command.Parameters.AddWithValue("ay", montAndYear);
                 command.ExecuteNonQuery();
                 con.Close();
             }
@@ -117,12 +118,17 @@ namespace EBudgetPlaning.Business.Model
         {
             using (SQLiteConnection con = db.GetConnection())
             {
-                SQLiteCommand command = new SQLiteCommand("UPDATE gelirler SET gelir_adi=@adi, gelir_miktari=@miktari, gelir_tarihi=@tarihi WHERE gelir_Id=@id", con);
+
+                string[] month = dateSystem.Split('.');
+                string monthandyear = month[1] + "." + month[2];
+                SQLiteCommand command = new SQLiteCommand("UPDATE gelirler " +
+                    "SET gelir_adi=@adi, gelir_miktari=@miktari, gelir_tarihi=@tarihi,gelir_kisatarih=@ay" +
+                    " WHERE gelir_Id=@id", con);
                 command.Parameters.AddWithValue("id", gelir.Id);
                 command.Parameters.AddWithValue("adi", gelir.GelirAdi);
                 command.Parameters.AddWithValue("miktari", gelir.GelirMiktari);
                 command.Parameters.AddWithValue("tarihi", gelir.GelirTarihi);
-
+                command.Parameters.AddWithValue("ay", monthandyear);
                 command.ExecuteNonQuery();
                 con.Close();
 
@@ -140,17 +146,85 @@ namespace EBudgetPlaning.Business.Model
                 {
                     string dbDate = dr[3].ToString();
                     string[] dbMonth = dbDate.Split('.');
-                    string val = dbMonth[1] +"."+ dbMonth[2];
+                    string val = dbMonth[1] + "." + dbMonth[2];
                     if (!searchList.Contains(val))
                     {
                         searchList.Add(val);
-                    }                 
+                    }
                 }
                 con.Close();
                 return searchList;
             }
         }
 
+        public ObservableCollection<KategoriModel> getKategori()
+        {
+            string[] month = dateSystem.Split('.');
+            string monthandyear = month[1] + "." + month[2];
+
+            ObservableCollection<KategoriModel> modelKategori = new ObservableCollection<KategoriModel>();
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                string sqliteCommand = @"SELECT sum(gelir_miktari), gelir_adi, gelir_tarihi FROM gelirler
+                                        WHERE gelir_tarihi LIKE '%"+monthandyear+"%' GROUP BY gelir_adi";
+                SQLiteCommand komut = new SQLiteCommand
+                    (con);
+                komut.CommandText = sqliteCommand;
+                SQLiteDataReader dr = komut.ExecuteReader();
+                while (dr.Read())
+                {
+                    modelKategori.Add(new KategoriModel
+                    {
+                        Degeri = dr[0].ToString(),
+                        KategoriAdi = dr[1].ToString()
+                    });
+                }
+                con.Close();
+                return modelKategori;
+            }
+        }
+
+        public ObservableCollection<string> getKategoriName()
+        {
+            ObservableCollection<string> kategori = new ObservableCollection<string>();
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                string sqliteCommand = @"SELECT gelir_adi FROM gelirler GROUP BY gelir_adi";
+                SQLiteCommand komut = new SQLiteCommand
+                    (con);
+                komut.CommandText = sqliteCommand;
+                SQLiteDataReader dr = komut.ExecuteReader();
+                while (dr.Read())
+                {
+                    kategori.Add(dr[0].ToString());
+                }
+                con.Close();
+                return kategori;
+            }
+        }
+
+        public List<GrafikModel> getTotalGelir()
+        {
+            List<GrafikModel> grafikModel = new List<GrafikModel>();
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                string sqliteCommand = @"SELECT sum(gelir_miktari), gelir_kisatarih FROM gelirler " +
+                                        "GROUP BY gelir_kisatarih";
+                SQLiteCommand komut = new SQLiteCommand(con);
+                komut.CommandText = sqliteCommand;
+                SQLiteDataReader dr = komut.ExecuteReader();
+                while (dr.Read())
+                {
+                    grafikModel.Add(new GrafikModel
+                    {
+                        Key = dr[1].ToString(),
+                        Values = Convert.ToInt32(dr[0])
+                    });
+                }
+                con.Close();
+                return grafikModel;
+            }
+        }
 
 
         #endregion

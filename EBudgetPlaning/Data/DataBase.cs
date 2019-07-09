@@ -23,15 +23,17 @@ namespace EBudgetPlaning.Data
                                                     [gelir_id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                                     [gelir_adi] TEXT DEFAULT '',
                                                     [gelir_miktari] TEXT DEFAULT '',
-                                                    [gelir_tarihi] TEXT DEFAULT '')";
+                                                    [gelir_tarihi] TEXT DEFAULT '',
+                                                    [gelir_kisatarih] TEXT DEFAULT '')";
         /// <summary>
         ///  giderler tablosunu oluşturur.
         /// </summary>
-        private string CreateTableGider =  @"CREATE TABLE IF NOT EXISTS [giderler](
+        private string CreateTableGider = @"CREATE TABLE IF NOT EXISTS [giderler](
                                                     [gider_id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                                     [gider_adi] TEXT DEFAULT '',
                                                     [gider_miktari] TEXT DEFAULT '',
-                                                    [gider_tarihi] TEXT DEFAULT '')";
+                                                    [gider_tarihi] TEXT DEFAULT '',
+                                                    [gider_kisatarih] TEXT DEFAULT '')";
 
         /// <summary>
         /// User tablosunu oluşturur.

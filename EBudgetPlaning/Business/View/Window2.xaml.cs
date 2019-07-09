@@ -14,7 +14,7 @@ namespace EBudgetPlaning.Business.View
         {
             giderViewModel = new GiderViewModel();
             InitializeComponent();
-            DataContext = giderViewModel;
+            this.DataContext = giderViewModel;
         }
 
         public void Dispose()

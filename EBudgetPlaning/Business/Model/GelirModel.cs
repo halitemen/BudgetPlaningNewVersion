@@ -8,7 +8,7 @@
         private int _id;
         private string _gelirAdi;
         private string _gelirMiktari;
-        private string _gelirtarihi;
+        private string _gelirTarihi;
 
         public int Id
         {
@@ -30,10 +30,9 @@
 
         public string GelirTarihi
         {
-            get { return _gelirtarihi; }
-            set { _gelirtarihi = value; }
+            get { return _gelirTarihi; }
+            set { _gelirTarihi = value; }
         }
-
 
     }
 }

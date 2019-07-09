@@ -32,6 +32,8 @@ namespace EBudgetPlaning.Business.ViewModel
 
         #region Members
 
+        private AnaSayfa anaSayfa;
+
         /// <summary>
         /// Toplam gideri tutar
         /// </summary>
@@ -75,6 +77,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnNotifyPropertyChanged(nameof(ToplamGider));
             }
         }
+
         public int ToplamGelir
         {
             get { return toplamGelir; }
@@ -84,6 +87,7 @@ namespace EBudgetPlaning.Business.ViewModel
                 OnNotifyPropertyChanged(nameof(ToplamGelir));
             }
         }
+
         public ObservableCollection<GelirModel> GelirList
         {
             get { return gelirList; }
@@ -228,6 +232,13 @@ namespace EBudgetPlaning.Business.ViewModel
                         MessageBox.Show("Bir sorun oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     break;
+
+                case "GELİRGRAFIK":
+                    using(GrafikWindowGelir grafikWindowGelir = new GrafikWindowGelir())
+                    {
+                        grafikWindowGelir.ShowDialog();
+                    }
+                    break;
                 case "GIDEREKLE":
                     using (GiderWindow window = new GiderWindow())
                     {
@@ -309,16 +320,26 @@ namespace EBudgetPlaning.Business.ViewModel
                         MessageBox.Show("Bir sorun oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     break;
-                case "KUR":
-                    using (BrowserWindow browser = new BrowserWindow())
+                case "GELIRANALİZİ":
+                    using (GelirAnalizi analiz = new GelirAnalizi())
                     {
-                        browser.ShowDialog();
+                        analiz.ShowDialog();
                     }
                     break;
-
+                case "GIDERANALIZI":
+                    using (GiderAnalizi analiz = new GiderAnalizi())
+                    {
+                        analiz.ShowDialog();
+                    }
+                    break;
+                case "GIDERGRAFIGI":
+                    using (GrafikWindowGider grafikGiderWindow = new GrafikWindowGider())
+                    {
+                        grafikGiderWindow.ShowDialog();
+                    }
+                    break;
             }
         }
-
 
         private int gelirToplam()
         {
@@ -339,6 +360,7 @@ namespace EBudgetPlaning.Business.ViewModel
             }
             return gider;
         }
+
         private void GiderViewModel_UpdateGiderEvent(object sender, EventArgs e)
         {
             var gider = (GiderModel)sender;
@@ -356,6 +378,7 @@ namespace EBudgetPlaning.Business.ViewModel
             var gelir = (GelirModel)sender;
             GelirList.Add(gelir);
         }
+
         private void GelirViewModel_UpdateGelirEvent(object sender, EventArgs e)
         {
             var gelir = (GelirModel)sender;

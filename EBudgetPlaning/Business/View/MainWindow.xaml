@@ -11,7 +11,8 @@
         <TextBlock HorizontalAlignment="Left"  Margin="10,102,0,0" TextWrapping="Wrap" Text="Kullanıcı Adı : " VerticalAlignment="Top" FontSize="20"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,145,0,0" TextWrapping="Wrap" Text="Şifre : " VerticalAlignment="Top" FontSize="20"/>
         <TextBox Text="{Binding UserName, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="154,102,0,0" VerticalAlignment="Top" Width="157"/>
-        <TextBox Text="{Binding UserPass, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="154,147,0,0" VerticalAlignment="Top" Width="157"/>
+        <PasswordBox  Width="157" Height="25" PasswordChar="*" Margin="154,145,31,130"></PasswordBox>
+        <!--<TextBox Text="{Binding UserPass, Mode=TwoWay}" HorizontalAlignment="Left" Height="25" Margin="154,147,0,0" VerticalAlignment="Top" Width="157"/>-->
         <Label Content="Kullanıcı Giriş Bilgileri" HorizontalAlignment="Left" Margin="39,33,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Times New Roman" Height="43" Width="254"/>
         <Button Command="{Binding CheckUser}" Content="Giriş Yap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Margin="224,209,0,0" Height="Auto"/>
 

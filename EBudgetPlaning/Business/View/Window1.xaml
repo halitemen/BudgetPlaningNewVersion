@@ -5,21 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EBudgetPlaning.Business.View"
         mc:Ignorable="d"
-        Title="Gelir" Height="304.541" Width="293.957" WindowStartupLocation="CenterScreen">
+        Title="Gelir" Height="356.061" Width="293.957" WindowStartupLocation="CenterScreen">
     <Grid Margin="10,24,13,14">
         <Grid.RowDefinitions>
             <RowDefinition Height="135"/>
             <RowDefinition Height="28"/>
 
         </Grid.RowDefinitions>
-        <TextBox Text="{Binding GelirAdi, Mode=TwoWay}" Height="23" Margin="107,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
-        <TextBox Text="{Binding GelirMiktari, Mode=TwoWay}" Margin="107,73,0,38" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120"/>
-        <!--<TextBox Text="{Binding GelirTarihi, Mode=TwoWay}" Margin="107,127,0,12" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120" Grid.RowSpan="2"/>-->
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Gelir Türü" VerticalAlignment="Top" Margin="10,26,0,0" Height="23" Width="58"/>
+        <TextBox Visibility="{Binding VisibleObject}" Text="{Binding GelirAdi, Mode=TwoWay}" Height="23" Margin="107,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
+        <TextBox Text="{Binding GelirMiktari, Mode=TwoWay}" Margin="107,73,0,31" TextWrapping="Wrap" HorizontalAlignment="Left" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Kategori" VerticalAlignment="Top" Margin="10,26,0,0" Height="23" Width="58"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Gelir Mikarı" VerticalAlignment="Top" Margin="10,73,0,0" Height="23" Width="70"/>
         <TextBlock TextWrapping="Wrap" Text="Gelir Tarihi" VerticalAlignment="Top" Margin="10,127,0,0" Height="23" HorizontalAlignment="Left" Width="62" Grid.RowSpan="2"/>
-        <Button Command="{Binding GelirCommand}" Content="{Binding buttonName}" Margin="137,38,0,-38" Height="Auto" MaxWidth="130" HorizontalAlignment="Left" Width="Auto"  Grid.Row="1"/>
-        <DatePicker Text="{Binding GelirTarihi, Mode=TwoWay}" HorizontalAlignment="Left" Margin="107,119,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Width="120"/>
+        <Button Command="{Binding GelirCommand}" Content="{Binding buttonName}" Margin="152,112,0,-112" Height="Auto" MaxWidth="130" HorizontalAlignment="Left" Width="Auto"  Grid.Row="1"/>
+        <DatePicker Style="{x:Null}" Text="{Binding GelirTarihi, Mode=TwoWay}" HorizontalAlignment="Left" Margin="107,119,0,0" VerticalAlignment="Top" Grid.RowSpan="2" Width="120" Height="31"/>
+        <ComboBox Visibility="{Binding VisibleObjectKategori}" SelectedItem="{Binding GelirAdi, Mode=TwoWay}" ItemsSource="{Binding ComboList}" HorizontalAlignment="Left" Height="34" Margin="107,15,0,0" VerticalAlignment="Top" Width="120"/>
+        
+        <CheckBox Command="{Binding CheckboxCommand}" IsChecked="{Binding CheckBox}" Content="Farklı bir kategori eklemek istiyorum." HorizontalAlignment="Left" Height="19" Margin="10,53,0,-43" Grid.Row="1" VerticalAlignment="Top" Width="243"/>
 
     </Grid>
 

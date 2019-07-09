@@ -26,7 +26,6 @@ namespace EBudgetPlaning.Business.Model
         DataBase db;
         ObservableCollection<GiderModel> giderList;
         ObservableCollection<GiderModel> allgiderList;
-        string giderDBPath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())) + @"\Data\giderler.db";
         string dateSystem = DateTime.Now.ToShortDateString();
 
         #endregion
@@ -86,12 +85,15 @@ namespace EBudgetPlaning.Business.Model
 
         public void addGider(GiderModel gider)
         {
+            string[] getMontYear = gider.GiderTarihi.Split('.');
+            string montAndYear = getMontYear[1] + "." + getMontYear[2];
             using (SQLiteConnection con = db.GetConnection())
             {
-                SQLiteCommand command = new SQLiteCommand("INSERT INTO giderler(gider_adi, gider_miktari, gider_tarihi) VALUES (@gAdi, @mik, @tarih)", con);
+                SQLiteCommand command = new SQLiteCommand("INSERT INTO giderler(gider_adi, gider_miktari, gider_tarihi, gider_kisatarih) VALUES (@gAdi, @mik, @tarih,@ay)", con);
                 command.Parameters.AddWithValue("gAdi", gider.GiderAdi);
                 command.Parameters.AddWithValue("mik", gider.GiderMiktari);
                 command.Parameters.AddWithValue("tarih", gider.GiderTarihi);
+                command.Parameters.AddWithValue("ay", montAndYear);
                 command.ExecuteNonQuery();
                 con.Close();
             }
@@ -112,14 +114,18 @@ namespace EBudgetPlaning.Business.Model
 
         public void UpdateGider(GiderModel gider)
         {
+            string[] getMontYear = gider.GiderTarihi.Split('.');
+            string montAndYear = getMontYear[1] + "." + getMontYear[2];
             using (SQLiteConnection con = db.GetConnection())
             {
-                SQLiteCommand command = new SQLiteCommand("UPDATE giderler SET gider_adi=@adi, gider_miktari=@miktari, gider_tarihi=@tarihi WHERE gider_Id=@id", con);
+                SQLiteCommand command = new SQLiteCommand("UPDATE giderler " +
+                                                          "SET gider_adi=@adi, gider_miktari=@miktari, gider_tarihi=@tarihi ,gider_kisatarih=@ay" +
+                                                          "WHERE gider_Id=@id", con);
                 command.Parameters.AddWithValue("id", gider.Id);
                 command.Parameters.AddWithValue("adi", gider.GiderAdi);
                 command.Parameters.AddWithValue("miktari", gider.GiderMiktari);
                 command.Parameters.AddWithValue("tarihi", gider.GiderTarihi);
-
+                command.Parameters.AddWithValue("ay",montAndYear);
                 command.ExecuteNonQuery();
                 con.Close();
             }
@@ -147,7 +153,72 @@ namespace EBudgetPlaning.Business.Model
             }
         }
 
+        public ObservableCollection<string> getKategoriName()
+        {
+            ObservableCollection<string> kategori = new ObservableCollection<string>();
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                string sqliteCommand = @"SELECT gider_adi FROM giderler  GROUP BY gider_adi";
+                SQLiteCommand komut = new SQLiteCommand
+                    (con);
+                komut.CommandText = sqliteCommand;
+                SQLiteDataReader dr = komut.ExecuteReader();
+                while (dr.Read())
+                {
+                    kategori.Add(dr[0].ToString());
+                }
+                con.Close();
+                return kategori;
+            }
+        }
 
+        public ObservableCollection<KategoriModel> getKategori()
+        {
+            string[] month = dateSystem.Split('.');
+            string monthandyear = month[1] + "." + month[2];
+            ObservableCollection<KategoriModel> modelKategori = new ObservableCollection<KategoriModel>();
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                string sqliteCommand = @"SELECT sum(gider_miktari), gider_adi, gider_tarihi FROM giderler
+                                            WHERE gider_tarihi LIKE '%"+monthandyear+"%' GROUP BY gider_adi";
+                SQLiteCommand komut = new SQLiteCommand(con);
+                komut.CommandText = sqliteCommand;
+                SQLiteDataReader dr = komut.ExecuteReader();
+                while (dr.Read())
+                {
+                    modelKategori.Add(new KategoriModel
+                    {
+                        Degeri = dr[0].ToString(),
+                        KategoriAdi = dr[1].ToString()
+                    });
+                }
+                con.Close();
+                return modelKategori;
+            }
+        }
+
+        public List<GrafikModel> ForGraphic()
+        {
+            List<GrafikModel> grafikModel = new List<GrafikModel>();
+            using (SQLiteConnection con = db.GetConnection())
+            {
+                string sqliteCommand = @"SELECT sum(gider_miktari), gider_kisatarih FROM giderler "+
+                                        "GROUP BY gider_kisatarih";
+                SQLiteCommand komut = new SQLiteCommand(con);
+                komut.CommandText = sqliteCommand;
+                SQLiteDataReader dr = komut.ExecuteReader();
+                while (dr.Read())
+                {
+                    grafikModel.Add(new GrafikModel
+                    {
+                        Key = dr[1].ToString(),
+                        Values = Convert.ToInt32(dr[0])
+                    });
+                }
+                con.Close();
+                return grafikModel;
+            }
+        }
 
         #endregion
     }

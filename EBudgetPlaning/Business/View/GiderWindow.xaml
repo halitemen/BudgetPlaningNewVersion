@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EBudgetPlaning.Business.View"
         mc:Ignorable="d"
-        Title="Gider" Height="300" Width="321.429" WindowStartupLocation="CenterScreen">
+        Title="Gider" Height="360.286" Width="333.835" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBox Text="{Binding GiderAdi, Mode=TwoWay}" Height="29" Margin="132,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"/>
-        <TextBox Text="{Binding GiderMiktari, Mode=TwoWay}" Margin="132,86,0,151" TextWrapping="Wrap" HorizontalAlignment="Left" Width="150"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Gider Türü" VerticalAlignment="Top" Margin="10,26,0,0" Height="29" Width="73"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Gider Miktarı" VerticalAlignment="Top" Margin="10,86,0,0" Height="29" Width="88"/>
+        <TextBox Visibility="{Binding VisibleObject}" Text="{Binding GiderAdi, Mode=TwoWay}" Height="29" Margin="132,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150"/>
+        <TextBox  Text="{Binding GiderMiktari, Mode=TwoWay}" Margin="132,76,0,213" TextWrapping="Wrap" HorizontalAlignment="Left" Width="150"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Kategori" VerticalAlignment="Top" Margin="10,37,0,0" Height="18" Width="73"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Gider Miktarı" VerticalAlignment="Top" Margin="10,96,0,0" Height="20" Width="88"/>
         <TextBlock TextWrapping="Wrap" Text="Gider Tarihi" VerticalAlignment="Top" Margin="10,155,0,0" Height="29" HorizontalAlignment="Left" Width="78"/>
-        <Button Command="{Binding GiderCommand}" Content="{Binding buttonName}" Margin="191,202,0,35" MaxWidth="130" HorizontalAlignment="Left" Width="Auto" Height="Auto"/>
-        <DatePicker Text="{Binding GiderTarihi, Mode=TwoWay}" HorizontalAlignment="Left" Margin="132,145,0,0" VerticalAlignment="Top" Width="150" Height="30"/>
+        <Button Command="{Binding GiderCommand}" Content="{Binding buttonName}" Margin="194,273,0,20" MaxWidth="130" HorizontalAlignment="Left" Width="Auto" Height="Auto"/>
+        <DatePicker Style="{x:Null}" Text="{Binding GiderTarihi, Mode=TwoWay}" HorizontalAlignment="Left" Margin="132,145,0,0" VerticalAlignment="Top" Width="150" Height="39"/>
+        <ComboBox Visibility="{Binding VisibleObjectKategori}" ItemsSource="{Binding ComboList}" SelectedItem="{Binding GiderAdi, Mode=TwoWay}" HorizontalAlignment="Left" Margin="132,27,0,0" VerticalAlignment="Top" Width="150"/>
+        <CheckBox Command="{Binding CheckboxCommand}" IsChecked="{Binding CheckBox}" Content="Farklı bir kategori eklemek istiyorum." HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
